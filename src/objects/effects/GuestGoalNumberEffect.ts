@@ -1,4 +1,5 @@
-import { Operation, modifyGuestGoalAction } from "../../actions/modifyGuestGoal";
+import { modifyGuestGoalAction } from "../../actions/modifyGuestGoal";
+import { Operation, getUndoOperationValues } from "../../utils/doOperation";
 import { Image } from "../Image";
 import { Effect } from "./BaseEffect";
 
@@ -19,23 +20,7 @@ export class GuestGoalNumberEffect extends Effect {
     modifyGuestGoalAction(this.goal, this.operation);
   }
   override cancelOrUndo(): void {
-    switch (this.operation) {
-      case "add": {
-        modifyGuestGoalAction(-this.goal, "add");
-        break;
-      }
-      case "subtract": {
-        modifyGuestGoalAction(-this.goal, "subtract");
-        break;
-      }
-      case "divide": {
-        modifyGuestGoalAction(this.goal, "multiply");
-        break;
-      }
-      case "multiply": {
-        modifyGuestGoalAction(this.goal, "divide");
-        break;
-      }
-    }
+    const { undoValue, undoOperation } = getUndoOperationValues(this.goal, this.operation);
+    modifyGuestGoalAction(undoValue, undoOperation);
   }
 }

@@ -1,4 +1,4 @@
-import { Operation } from "./modifyGuestGoal";
+import { Operation, doOperation } from "../utils/doOperation";
 import { noopAction } from "./noop";
 export const modifyExpenditureMultiplierAction = (
   multiplier: number,
@@ -6,24 +6,6 @@ export const modifyExpenditureMultiplierAction = (
   expenditureType: ExpenditureType
 ) => {
   noopAction(() => {
-    switch (operation) {
-      case "add": {
-        park.expenditureMultipliers[expenditureType] += multiplier;
-        break;
-      }
-      case "subtract": {
-        park.expenditureMultipliers[expenditureType] -= multiplier;
-        break;
-      }
-
-      case "divide": {
-        park.expenditureMultipliers[expenditureType] /= multiplier;
-        break;
-      }
-      case "multiply": {
-        park.expenditureMultipliers[expenditureType] *= multiplier;
-        break;
-      }
-    }
+    doOperation(operation, park.expenditureMultipliers[expenditureType], multiplier);
   });
 };
